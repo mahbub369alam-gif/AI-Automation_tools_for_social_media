@@ -1,37 +1,200 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📩 Social AI Bot – Live Chat Dashboard
 
-## Getting Started
+A full-stack **Social Media AI Chat System** that connects **Facebook & Instagram Inbox**
+with a **real-time admin dashboard**, supporting **live chat, image/video sharing,
+AI auto-replies, and conversation history**.
 
-First, run the development server:
+---
 
-```bash
+## ✨ Features
+
+- 📡 Facebook & Instagram Webhook Integration  
+- 💬 Real-time Live Chat (Socket.IO)  
+- 🤖 AI Auto Reply (Groq / LLaMA)  
+- 🧠 Conversation Context Memory  
+- 📸 Image & 🎥 Video Message Support  
+- 📂 Multiple Media Upload Support  
+- 🧾 Conversation History (MongoDB)  
+- 🧑‍💻 Manual Reply from Admin Dashboard  
+- 🔄 Page Inbox → Live UI Sync (Echo Message Handling)  
+
+---
+
+## 🧱 Tech Stack
+
+### Backend
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB + Mongoose
+- Socket.IO
+- Multer (Media Upload)
+- Axios
+- Groq SDK (LLaMA)
+
+### Frontend
+- Next.js (React)
+- TypeScript
+- Tailwind CSS
+- Socket.IO Client
+
+---
+
+## 📁 Project Structure
+
+src/
+├── app/
+│ ├── modules/
+│ │ └── socialAiBot/
+│ │ ├── socialAiBot.controller.ts
+│ │ ├── socialAiBot.route.ts
+│ │ ├── socialAiBot.message.model.ts
+│ │ └── products.xlsx
+│ └── app.ts
+│
+├── components/
+│ ├── ChatDashboard.tsx
+│ └── ChatWindow.tsx
+│
+├── uploads/ # Uploaded images & videos
+└── types/
+└── chat.ts
+
+yaml
+Copy code
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the backend root:
+
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/social-ai-bot
+
+WEBHOOK_VERIFY_TOKEN=your_verify_token
+PUBLIC_BASE_URL=https://your-ngrok-url.ngrok-free.dev
+
+GROQ_API_KEY=your_groq_api_key
+⚠️ Important
+
+PUBLIC_BASE_URL must be a public HTTPS URL
+
+Required for Facebook/Instagram image & video delivery
+
+▶️ Run Backend
+bash
+Copy code
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Backend runs at:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+arduino
+Copy code
+http://localhost:5000
+Health check:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+bash
+Copy code
+GET /health
+▶️ Run Frontend
+bash
+Copy code
+npm install
+npm run dev
+Frontend runs at:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+arduino
+Copy code
+http://localhost:3000
+🔗 API Endpoints
+Webhook
+swift
+Copy code
+GET  /api/social-ai-bot/facebook/webhook
+POST /api/social-ai-bot/facebook/webhook
+Conversations
+swift
+Copy code
+GET /api/social-ai-bot/conversations
+GET /api/social-ai-bot/messages/:conversationId
+Manual Text Reply (Admin)
+bash
+Copy code
+POST /api/social-ai-bot/manual-reply
+Manual Media Reply (Image / Video)
+bash
+Copy code
+POST /api/social-ai-bot/manual-media-reply
 
-## Learn More
+FormData:
+- conversationId
+- files[] (multiple image/video)
+🖼️ Media Upload Rules
+Supported: Image & Video
 
-To learn more about Next.js, take a look at the following resources:
+Recommended max size: 8–10 MB
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Files stored in /uploads
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Public access:
 
-## Deploy on Vercel
+bash
+Copy code
+{PUBLIC_BASE_URL}/uploads/<filename>
+🤖 AI Bot Behavior
+Replies in the same language as the user (Bangla / English)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Short, polite replies (1–2 lines)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# AI-Automation_tools_for_social_media
+If customer sends an image, bot replies:
+
+Copy code
+ধন্যবাদ! ছবিটা পেয়েছি দয়া করে আপনার whatsapp নাম্বার দিন,
+আমাদের একজন প্রতিনিধি শিগ্রই আপনার সাথে যোগাযোগ করবে।
+Product prices are loaded from products.xlsx
+
+Never guesses prices
+
+🔄 Live Message Flow
+Customer messages Facebook / Instagram Page
+
+Meta Webhook triggers backend
+
+Message saved in database
+
+Socket emits new_message
+
+Admin UI updates instantly
+
+✔️ Page Inbox messages also appear in Live UI
+✔️ No AI auto-reply on admin echo messages
+
+🧪 Common Issues
+Media send fails
+Ensure PUBLIC_BASE_URL is HTTPS
+
+File size not too large
+
+ngrok / tunnel running
+
+Page Inbox message not showing
+message_echoes enabled in Meta App
+
+Webhook subscriptions configured correctly
+
+📌 Future Improvements
+Admin authentication
+
+Multi-agent support
+
+Typing indicators
+
+Read receipts
+
+Cloud storage (S3 / Cloudinary)
+
+👤 Author
+Mahbub Alam
+📧 onigenius.og@gmail.com
