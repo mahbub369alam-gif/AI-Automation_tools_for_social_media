@@ -60,8 +60,6 @@ src/
 └── types/
 └── chat.ts
 
-yaml
-Copy code
 
 ---
 
